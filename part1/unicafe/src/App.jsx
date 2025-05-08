@@ -11,21 +11,25 @@ const RatingButton = (props) => {
 const Statistics = ({good, neutral, bad, all}) => {
   const calculateAverage = () => all ? (good * 1 + bad * -1) / (good + neutral + bad) : 0
   const calculatePositive = () => all ? good / all : 0
-  return (
-    <div>
-      <h1>statistics</h1>
+  if(all === 0) {
+    return (<h3>No feedback given</h3>)
+  }
+  else {
+    return (
       <div>
-        <div>good {good}</div>
-        <div>neutral {neutral}</div>
-        <div>bad {bad}</div>
+        <div>
+          <div>good {good}</div>
+          <div>neutral {neutral}</div>
+          <div>bad {bad}</div>
+        </div>
+        <div>
+          <div>all {all}</div>
+          <div>average {calculateAverage()}</div>
+          <div>positive {calculatePositive()} %</div>
+        </div>
       </div>
-      <div>
-        <div>all {all}</div>
-        <div>average {calculateAverage()}</div>
-        <div>positive {calculatePositive()} %</div>
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
 const App = () => {
@@ -59,6 +63,7 @@ const App = () => {
         <RatingButton text={"neutral"} onClick={addNeutral}></RatingButton>
         <RatingButton text={"bad"} onClick={addBad}></RatingButton>
       </div>
+      <h1>statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad} all={all}></Statistics>
     </div>
   )
