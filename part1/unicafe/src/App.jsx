@@ -19,7 +19,7 @@ const StatisticLine = ({text, value}) => {
 
 const Statistics = ({good, neutral, bad, all}) => {
   const calculateAverage = () => all ? (good * 1 + bad * -1) / (good + neutral + bad) : 0
-  const calculatePositive = () => all ? good / all : 0
+  const calculatePositive = () => all ? good / all * 100 : 0
   if(all === 0) {
     return <h3>No feedback given</h3>
   }
