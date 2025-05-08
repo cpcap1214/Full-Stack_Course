@@ -10,9 +10,10 @@ const RatingButton = (props) => {
 
 const StatisticLine = ({text, value}) => {
   return (
-    <div>
-      {text} {value}
-    </div>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -20,22 +21,20 @@ const Statistics = ({good, neutral, bad, all}) => {
   const calculateAverage = () => all ? (good * 1 + bad * -1) / (good + neutral + bad) : 0
   const calculatePositive = () => all ? good / all : 0
   if(all === 0) {
-    return (<h3>No feedback given</h3>)
+    return <h3>No feedback given</h3>
   }
   else {
     return (
-      <div>
-        <div>
-          <StatisticLine text={"good"} value={good}/>
-          <StatisticLine text={"neutral"} value={neutral}/>
-          <StatisticLine text={"bad"} value={bad}/>
-        </div>
-        <div>
-          <StatisticLine text={"all"} value={all}/>
-          <StatisticLine text={"average"} value={calculateAverage()}/>
-          <StatisticLine text={"positive"} value={calculatePositive()}/>
-        </div>
-      </div>
+      <table>
+        <tbody>
+            <StatisticLine text={"good"} value={good}/>
+            <StatisticLine text={"neutral"} value={neutral}/>
+            <StatisticLine text={"bad"} value={bad}/>
+            <StatisticLine text={"all"} value={all}/>
+            <StatisticLine text={"average"} value={calculateAverage()}/>
+            <StatisticLine text={"positive"} value={calculatePositive()}/>
+        </tbody>
+      </table>
     )
   }
 }
