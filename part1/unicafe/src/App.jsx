@@ -8,6 +8,14 @@ const RatingButton = (props) => {
   )
 }
 
+const StatisticLine = ({text, value}) => {
+  return (
+    <div>
+      {text} {value}
+    </div>
+  )
+}
+
 const Statistics = ({good, neutral, bad, all}) => {
   const calculateAverage = () => all ? (good * 1 + bad * -1) / (good + neutral + bad) : 0
   const calculatePositive = () => all ? good / all : 0
@@ -18,14 +26,14 @@ const Statistics = ({good, neutral, bad, all}) => {
     return (
       <div>
         <div>
-          <div>good {good}</div>
-          <div>neutral {neutral}</div>
-          <div>bad {bad}</div>
+          <StatisticLine text={"good"} value={good}/>
+          <StatisticLine text={"neutral"} value={neutral}/>
+          <StatisticLine text={"bad"} value={bad}/>
         </div>
         <div>
-          <div>all {all}</div>
-          <div>average {calculateAverage()}</div>
-          <div>positive {calculatePositive()} %</div>
+          <StatisticLine text={"all"} value={all}/>
+          <StatisticLine text={"average"} value={calculateAverage()}/>
+          <StatisticLine text={"positive"} value={calculatePositive()}/>
         </div>
       </div>
     )
