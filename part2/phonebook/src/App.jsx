@@ -31,15 +31,28 @@ const PersonForm = ({
   </form>
 )
 
-const Persons = ({ persons }) => (
-  <ul>
-    {persons.map(person => (
-      <li key={person.id}>
-        {person.name} {person.number}
-      </li>
-    ))}
-  </ul>
-)
+const Persons = ({ persons, handleDelete }) => {
+  const handleConfirmDelete = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      handleDelete(id)
+    }
+  }
+
+  return (
+    <ul>
+      {persons.map(person => (
+        <li key={person.id}>
+          {person.name} {person.number}
+          <button onClick={() => handleConfirmDelete(person.id, person.name)}>
+            delete
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -77,12 +90,20 @@ const App = () => {
     }
   }
 
+  const handleDelete = (id) => {
+    personService
+      .deletePerson(id)
+      .then(() => {
+        setPersons(persons.filter((n) => n.id !== id))
+      })
+  }
+
   const handleAddPerson = (event) => setNewName(event.target.value)
   const handleAddNumber = (event) => setNewNumber(event.target.value)
   const handleFilteredName = (event) => setFilteredName(event.target.value)
 
   const filteredPersons = persons.filter(person =>
-    person.name.toLowerCase().startsWith(filteredName.toLowerCase())
+    person.name.startsWith(filteredName.toLowerCase())
   )
 
   return (
@@ -97,7 +118,7 @@ const App = () => {
         handleNumberChange={handleAddNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} handleDelete={handleDelete}/>
     </div>
   )
 }
