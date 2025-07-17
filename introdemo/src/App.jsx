@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import Footer from "./conponents/Footer"
 import Note from "./conponents/Note"
 import noteService from './services/Notes'
 
@@ -6,6 +7,7 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowall] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
   const noteToShow = showAll ? notes : notes.filter((note) => note.important === true);
 
   useEffect(() => {
@@ -37,6 +39,17 @@ const App = () => {
     setNewNote(event.target.value)
   }
 
+  const Notification = ({message}) => {
+    if(message === null) {
+      return null
+    }
+    return (
+      <div className="error">
+        {message}
+      </div>
+    )
+  }
+
   const toggleImportance = (id) => {
     const note = notes.find(n => n.id === id)
     const changedNote = {...note, important: !note.important}
@@ -48,7 +61,10 @@ const App = () => {
         ))
       })
       .catch(error => {
-        alert(`the note ${note.content} was already deleted`)
+        setErrorMessage(`the note ${note.content} was already deleted`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setNotes(notes.filter((n) => n.id !== id))
       })
   }
@@ -56,6 +72,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowall(!showAll)}>Toggle show all</button>
       </div>
@@ -66,6 +83,7 @@ const App = () => {
         <input value={newNote} onChange={handleNoteChange}/>
         <button type="submit">save</button>
       </form>
+      <Footer />
     </div>
   )
 }
